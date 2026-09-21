@@ -213,7 +213,7 @@ export function AgentBuilderApp({ unlocked, googleConfigured, signedIn, aiConfig
         <div className="agent-gate-icon"><LockKeyhole size={25} /></div>
         <p className="agent-eyebrow">PRIVATE WORKSPACE</p>
         <h1>Your job agent,<br />behind one door.</h1>
-        <p className="agent-muted">Enter the local access password to continue.</p>
+        <p className="agent-muted">Enter your access password to continue.</p>
         <form onSubmit={unlock} className="agent-unlock-form">
           <label htmlFor="agent-password">Password</label>
           <input id="agent-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />
