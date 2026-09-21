@@ -8,7 +8,7 @@ Private resume-based job search workspace. Upload a PDF or text resume, review f
 2. Copy `.env.example` to `.env.local` and set a strong `AGENT_BUILDER_PASSWORD`.
 3. Run `npm run dev` and open `http://localhost:3000`.
 
-Without Supabase configuration, workspace data is stored in a local SQLite database under `.data/`. It is not suitable for ephemeral serverless hosting. To use Google sign-in and persistent hosted data, configure a Supabase project, apply `supabase/migrations/0003_resume_job_agent.sql`, enable Google as an Auth provider, and set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Set `NEXT_PUBLIC_SITE_URL` to the deployment origin and register its `/auth/callback` URL with Supabase Auth.
+Without Supabase configuration, workspace data is stored in a local SQLite database under `.data/`. It is not suitable for ephemeral serverless hosting. For a password-protected hosted workspace, configure a Supabase project, apply `supabase/migrations/0003_resume_job_agent.sql`, and set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and server-only `SUPABASE_SERVICE_ROLE_KEY` on the host. Never expose that service-role key in browser code. Google sign-in is optional until its OAuth client is ready; then enable the provider in Supabase, set `GOOGLE_LOGIN_ENABLED=true`, set `NEXT_PUBLIC_SITE_URL` to the deployment origin, and register its `/auth/callback` URL with Supabase Auth.
 
 Drafts work locally without an AI key. Set `GEMINI_API_KEY` to enable AI-assisted tailoring after the user explicitly opts in to sending resume text to the provider. The job sources are Remotive and Arbeitnow. See `agent-builder-setup.md` for details.
 

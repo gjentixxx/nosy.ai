@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { hasSupabaseConfig } from "@/lib/supabase/env";
+import { hasGoogleAuthConfig } from "@/lib/supabase/env";
 import { gateCookieName, hasGateAccess } from "@/lib/job-agent/access";
 
 export async function proxy(request: NextRequest) {
@@ -9,7 +9,7 @@ export async function proxy(request: NextRequest) {
       !hasGateAccess(request.cookies.get(gateCookieName)?.value)) {
     return NextResponse.json({ error: "Private access required." }, { status: 401 });
   }
-  if (!hasSupabaseConfig()) return NextResponse.next({ request });
+  if (!hasGoogleAuthConfig()) return NextResponse.next({ request });
 
   let response = NextResponse.next({ request });
   const supabase = createServerClient(

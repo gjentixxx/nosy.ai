@@ -1,8 +1,8 @@
 import { mkdirSync } from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { hasSupabaseConfig } from "@/lib/supabase/env";
-import { createClient } from "@/lib/supabase/server";
+import { hasGoogleAuthConfig, hasSupabaseAdminConfig, hasSupabaseConfig } from "@/lib/supabase/env";
+import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { inferRegion } from "./matching";
 
 export type AgentState = {
@@ -45,7 +45,8 @@ function localDb() {
 
 export async function loadAgentState(userId: string): Promise<AgentState> {
   if (hasSupabaseConfig()) {
-    const supabase = await createClient();
+    if (!hasGoogleAuthConfig() && !hasSupabaseAdminConfig()) throw new Error("Persistent storage is not configured.");
+    const supabase = hasGoogleAuthConfig() ? await createClient() : createAdminClient();
     const { data, error } = await supabase.from("job_agent_state").select("state").eq("user_id", userId).maybeSingle();
     if (error) throw new Error(error.message);
     return withDefaults(data?.state as Partial<AgentState> | undefined);
@@ -61,7 +62,8 @@ export async function loadAgentState(userId: string): Promise<AgentState> {
 
 export async function saveAgentState(userId: string, state: AgentState) {
   if (hasSupabaseConfig()) {
-    const supabase = await createClient();
+    if (!hasGoogleAuthConfig() && !hasSupabaseAdminConfig()) throw new Error("Persistent storage is not configured.");
+    const supabase = hasGoogleAuthConfig() ? await createClient() : createAdminClient();
     const { error } = await supabase.from("job_agent_state").upsert({ user_id: userId, state, updated_at: new Date().toISOString() });
     if (error) throw new Error(error.message);
     return;

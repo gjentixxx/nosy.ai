@@ -11,3 +11,7 @@ export function hasSupabaseAdminConfig() {
       process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 }
+
+export function hasGoogleAuthConfig() {
+  return process.env.GOOGLE_LOGIN_ENABLED === "true" && hasSupabaseConfig();
+}

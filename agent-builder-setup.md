@@ -11,7 +11,7 @@ PDF extraction uses the cross-platform `pdf-parse` package. Text and Markdown re
 
 1. Create or connect a Supabase project, then apply `supabase/migrations/0003_resume_job_agent.sql`. The `job_agent_state` table has owner-only row-level policies.
 2. Configure Google Auth in Supabase and register `http://localhost:3000/auth/callback` in the Supabase redirect allow list. Add the deployed origin's callback when hosting.
-3. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `NEXT_PUBLIC_SITE_URL=http://localhost:3000` in `.env.local`, then restart the server. Google sign-in becomes required after the local password.
+3. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `NEXT_PUBLIC_SITE_URL=http://localhost:3000` in `.env.local`, then restart the server. Hosted workspace data is now persistent behind the password. Once Google OAuth is configured, set `GOOGLE_LOGIN_ENABLED=true` to require Google sign-in after the password.
 
 Job listings use the free Remotive and Arbeitnow APIs. The matcher accepts fresh postings with matching role titles, resume capabilities, seniority, and eligible region. Related design roles appear only when no exact design role qualifies. Searches refresh every five minutes while the hired agent page is open.
 
